@@ -52,8 +52,6 @@ public class CuentaServiceTest {
   public void testDarDeAltaCuentaNoSoportadaException() {
     Cuenta cuenta = createCuenta(TipoMoneda.DOLARES, TipoCuenta.CUENTA_CORRIENTE);
 
-    when(cuentaDao.find(cuenta.getNumeroCuenta())).thenReturn(null);
-
     assertThrows(
         CuentaNoSoportadaException.class, () -> cuentaService.darDeAltaCuenta(cuenta, 12345678));
   }
@@ -62,7 +60,6 @@ public class CuentaServiceTest {
   public void testDarDeAltaCuentaDuplicadaException() throws TipoCuentaAlreadyExistsException {
     Cuenta cuenta = createCuenta();
 
-    when(cuentaDao.find(cuenta.getNumeroCuenta())).thenReturn(null);
     doThrow(TipoCuentaAlreadyExistsException.class)
         .when(clienteService)
         .agregarCuenta(cuenta, clienteDni);
@@ -78,9 +75,6 @@ public class CuentaServiceTest {
           CuentaNoSoportadaException,
           CuentaAlreadyExistsException {
     Cuenta cuenta = createCuenta();
-
-    when(cuentaDao.find(cuenta.getNumeroCuenta())).thenReturn(null);
-    doNothing().when(clienteService).agregarCuenta(cuenta, clienteDni);
 
     cuentaService.darDeAltaCuenta(cuenta, clienteDni);
 
